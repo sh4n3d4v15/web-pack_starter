@@ -11,6 +11,9 @@ const common = {
     // Entry accepts a path or an object of entries.
     // The build chapter contains an example of the latter.
     entry: PATHS.app,
+    resolve: {
+      extensions: ['','.js','.jsx']
+    },
     output: {
         path: PATHS.build,
         filename: 'bundle.js'
@@ -21,9 +24,9 @@ const common = {
 if (TARGET === 'start' || !TARGET) {
 
     module.exports = merge(common, {
+        devtool: 'eval-source-map',
         devServer: {
             contentBase: PATHS.build,
-
             // Enable history API fallback so HTML5 History API based
             // routing works. This is a good default that will come
             // in handy in more complicated setups.
@@ -44,6 +47,10 @@ if (TARGET === 'start' || !TARGET) {
                 test: /\.css$/,
                 loaders: ['style', 'css'],
                 include: PATHS.app
+            },{
+              test: /\.jsx?$/,
+              loaders: ['babel?cacheDirectory'],
+              incldue: PATHS.app
             }]
         },
         plugins: [
